@@ -1,3 +1,5 @@
 SSD1306_Extended_Char	KEYWORD1
 print				KEYWORD2
 setCursor			KEYWORD2
+setCursorMode			KEYWORD2
+setPrintMode			KEYWORD2

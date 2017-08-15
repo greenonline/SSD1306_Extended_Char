@@ -26,69 +26,179 @@ const int kCharacterHeight = 9;
 // TextSize = 3 gives display 7 characters wide, 4 characters high
 const int kCharacterSize = 1;
 
+ boolean kCharacterResolution = true;
+ boolean kSendBufferOn = true;
 
 //constructors
 
+SSD1306_Extended_Char::SSD1306_Extended_Char(const u8g2_cb_t *rotation, uint8_t reset = U8X8_PIN_NONE, uint8_t clock = U8X8_PIN_NONE, uint8_t data = U8X8_PIN_NONE) : U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C(rotation, reset, clock, data/*_TFTWIDTH,_TFTHEIGHT*/)
+{
+  kCharacterResolution = true;
+  kSendBufferOn = true;
+}
 
-	SSD1306_Extended_Char::SSD1306_Extended_Char(const u8g2_cb_t *rotation, uint8_t reset = U8X8_PIN_NONE, uint8_t clock = U8X8_PIN_NONE, uint8_t data = U8X8_PIN_NONE) : U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C(rotation, reset, clock, data/*_TFTWIDTH,_TFTHEIGHT*/)
-	{
-
-	}
-
-  void SSD1306_Extended_Char::setCursor(int16_t x, int16_t y) {
+void SSD1306_Extended_Char::setCursor(int16_t x, int16_t y) {
 //U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::setCursor(x*kCharacterWidth*kCharacterSize, y+10*kCharacterHeight*kCharacterSize);
-      U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::setCursor(x*kCharacterWidth*kCharacterSize, y*10+10);
+  if (kCharacterResolution){
+    x = x*kCharacterWidth*kCharacterSize;
+    y = y*10+10;
+//    y = y*kCharacterHeight*kCharacterSize+10
   }
-
-  size_t SSD1306_Extended_Char::print(const String &s){
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(s);
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::setCursor(x, y);
 }
 
-  size_t SSD1306_Extended_Char::print(const char str[]){
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(str);
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+// +++++++
+// print
+// +++++++
+
+size_t SSD1306_Extended_Char::print(const __FlashStringHelper *ifsh){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(ifsh);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
 }
 
-  size_t SSD1306_Extended_Char::print(const char c){
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(c);
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+size_t SSD1306_Extended_Char::print(const String &s){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(s);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
 }
 
-  size_t SSD1306_Extended_Char::print(unsigned char b, int base){
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print((unsigned long) b, base);
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+size_t SSD1306_Extended_Char::print(const char str[]){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(str);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
 }
 
-  size_t SSD1306_Extended_Char::print(int n, int base){
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print((long) n, base);
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+size_t SSD1306_Extended_Char::print(const char c){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(c);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
 }
 
-  size_t SSD1306_Extended_Char::print(unsigned int n, int base){
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print((unsigned long) n, base);
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+size_t SSD1306_Extended_Char::print(unsigned char b, int base){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print((unsigned long) b, base);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
 }
 
-  size_t SSD1306_Extended_Char::print(long n, int base){
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(n, base);
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+size_t SSD1306_Extended_Char::print(int n, int base){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print((long) n, base);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
 }
 
-  size_t SSD1306_Extended_Char::print(unsigned long n, int base){
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(n, base);
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+size_t SSD1306_Extended_Char::print(unsigned int n, int base){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print((unsigned long) n, base);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
 }
 
-  size_t SSD1306_Extended_Char::print(double n, int digits){
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(n, digits);
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+size_t SSD1306_Extended_Char::print(long n, int base){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(n, base);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
 }
 
-  size_t SSD1306_Extended_Char::print(const Printable& x){
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(x);
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+size_t SSD1306_Extended_Char::print(unsigned long n, int base){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(n, base);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
 }
+
+size_t SSD1306_Extended_Char::print(double n, int digits){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(n, digits);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+size_t SSD1306_Extended_Char::print(const Printable& x){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::print(x);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+// +++++++
+// println
+// +++++++
+
+size_t SSD1306_Extended_Char::println(const __FlashStringHelper *ifsh){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::println(ifsh);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+size_t SSD1306_Extended_Char::println(const String &s){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::println(s);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+size_t SSD1306_Extended_Char::println(const char str[]){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::println(str);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+size_t SSD1306_Extended_Char::println(const char c){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::println(c);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+size_t SSD1306_Extended_Char::println(unsigned char b, int base){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::println((unsigned long) b, base);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+size_t SSD1306_Extended_Char::println(int n, int base){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::println((long) n, base);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+size_t SSD1306_Extended_Char::println(unsigned int n, int base){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::println((unsigned long) n, base);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+size_t SSD1306_Extended_Char::println(long n, int base){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::println(n, base);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+size_t SSD1306_Extended_Char::println(unsigned long n, int base){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::println(n, base);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+size_t SSD1306_Extended_Char::println(double n, int digits){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::println(n, digits);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+size_t SSD1306_Extended_Char::println(const Printable& x){
+  U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::println(x);
+  if (kSendBufferOn)
+    U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::sendBuffer();
+}
+
+// +++++++++
+// set modes
+// +++++++++
+
+void SSD1306_Extended_Char::setCursorMode(boolean characterResolutionOn){
+  kCharacterResolution = characterResolutionOn;
+}
+
+void SSD1306_Extended_Char::setPrintMode(boolean sendBufferOn){
+  kSendBufferOn = sendBufferOn;
+}
+
 
 
 //  void SSD1306_Extended_Char::clear() {
