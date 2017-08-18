@@ -65,10 +65,10 @@ SSD1306_Extended_Char::SSD1306_Extended_Char(const u8g2_cb_t *rotation, uint8_t 
 void SSD1306_Extended_Char::setCursor(int16_t x, int16_t y) {
 //U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::setCursor(x*characterWidth*characterSize, y+10*characterHeight*characterSize);
   int characterWidth = U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::getStrWidth("_"); // get the width of the widest character (no need to +2 for pixels either side, no additional spacing is required)
-  int characterHeight = U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::getAscent()-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::getDescent()+1; // get the character height and add a spare line
+  int characterHeight = U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::getAscent()-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::getDescent()+2; // get the character height and add a spare line
   if (characterResolutionOn){
     x = x*characterWidth;
-    y = y*characterHeight+characterHeight;
+    y = y*characterHeight+characterHeight-5;
   }
   U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C::setCursor(x, y);
 }
