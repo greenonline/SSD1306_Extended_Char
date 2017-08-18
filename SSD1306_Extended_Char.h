@@ -53,8 +53,8 @@ class SSD1306_Extended_Char : public U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C {
   }*/
         void setCursor(int16_t x,int16_t y);//char addressing
 
-void setCursorMode(boolean characterResolutionOn);
-void setPrintMode(boolean sendBufferOn);
+void setCursorMode(boolean characterResolutionMode);
+void setPrintMode(boolean sendBufferMode);
 
 //added sendBuffer() to print
     size_t print(const __FlashStringHelper *);
@@ -88,8 +88,8 @@ void setPrintMode(boolean sendBufferOn);
 //        void setCursorChar(int16_t x,int16_t y);//char addressing
 // Delete - used only in Extended, not Extended_Char
 private:
- boolean kCharacterResolution;
- boolean kSendBufferOn;
+ boolean characterResolutionOn;
+ boolean sendBufferOn;
   
 };
 
